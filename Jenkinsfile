@@ -22,6 +22,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Gradle Build'){
+            steps{
+                script{
+                    "sh ./gradlew build"
+                }
+            }
+        }
       
     }
 }
