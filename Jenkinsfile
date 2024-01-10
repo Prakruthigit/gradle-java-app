@@ -1,32 +1,36 @@
-def environments = [
-
-  'dev',
-
-  'qa',
-
-  'uat',
-
-  'prod'
-
-]
- 
 pipeline {
- 
-  agent any
- 
-  stages {
- 
-    stage('Deploy') {
+    agent any
 
-      steps {
+    stages {
 
-        script {
-
-          for (env in environments) {
-
-           echo "Loop success"
-
-          }
-
+         stage('Checkout') {
+            steps {
+                checkout scm
+            }
         }
 
+        stage('DEV Pipeline') 
+        {
+            steps{
+                script{
+                    if("$GIT_BRANCH" == 'develop') {
+                        echo "Loop success"
+                    }
+                    else {
+                        echo "Other branch"
+                    }
+                }
+            }
+        } 
+		
+		stage('Gradle Build'){
+            steps{
+                script{
+                    "sh chmod +x gradlew"
+                    "sh ./gradlew build"
+                }
+            }
+        }
+
+    }
+}
